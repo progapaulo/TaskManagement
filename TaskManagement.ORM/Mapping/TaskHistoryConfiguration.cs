@@ -1,0 +1,27 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskManagement.Domain.Entities;
+
+namespace TaskManagement.ORM.Mapping;
+
+public class TaskHistoryConfiguration : IEntityTypeConfiguration<TaskHistory>
+{
+    public void Configure(EntityTypeBuilder<TaskHistory> builder)
+    {
+        builder.ToTable("TaskHistories");
+
+        builder.HasKey(th => th.Id);
+
+        builder.Property(th => th.ChangeDetails)
+            .IsRequired()
+            .HasMaxLength(1000);
+
+        builder.Property(th => th.ChangeDate)
+            .IsRequired();
+
+        builder.HasOne(th => th.Tasks)
+            .WithMany(t => t.History)
+            .HasForeignKey(th => th.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
