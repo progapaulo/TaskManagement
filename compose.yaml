@@ -1,0 +1,6 @@
+﻿services:
+  taskmanagement.webapi:
+    image: taskmanagement.webapi
+    build:
+      context: .
+      dockerfile: TaskManagement.WebApi/Dockerfile

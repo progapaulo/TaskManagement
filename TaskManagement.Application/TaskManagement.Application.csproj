@@ -7,4 +7,8 @@
         <RootNamespace>TaskManagementAPI.Application</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TaskManagement.Domain\TaskManagement.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
