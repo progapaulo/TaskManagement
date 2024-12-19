@@ -26,6 +26,20 @@ public class TaskRepository : ITaskRepository
             .ToListAsync();
     }
 
+    public async Task AddTaskHistoryAsync(TaskHistory taskHistory)
+    {
+        await _context.TaskHistories.AddAsync(taskHistory);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Tasks> GetTaskByIdAsync(Guid taskId)
+    {
+        return await _context.Tasks
+            .Include(t => t.Comentarios)
+            .Include(t => t.History)
+            .FirstOrDefaultAsync(t => t.Id == taskId);
+    }
+
     public async Task<Tasks> AddAsync(Tasks task)
     {
         await _context.Tasks.AddAsync(task);

@@ -25,12 +25,13 @@ namespace TaskManagement.ORM.Migrations
             modelBuilder.Entity("TaskManagement.Domain.Entities.Comments", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
@@ -39,6 +40,8 @@ namespace TaskManagement.ORM.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TTaskId");
 
                     b.ToTable("Comentarios", (string)null);
                 });
@@ -65,6 +68,7 @@ namespace TaskManagement.ORM.Migrations
             modelBuilder.Entity("TaskManagement.Domain.Entities.TaskHistory", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ChangeDate")
@@ -79,6 +83,8 @@ namespace TaskManagement.ORM.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
 
                     b.ToTable("TaskHistories", (string)null);
                 });
@@ -122,7 +128,7 @@ namespace TaskManagement.ORM.Migrations
                 {
                     b.HasOne("TaskManagement.Domain.Entities.Tasks", "Tarefa")
                         .WithMany("Comentarios")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("TTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -133,7 +139,7 @@ namespace TaskManagement.ORM.Migrations
                 {
                     b.HasOne("TaskManagement.Domain.Entities.Tasks", "Tasks")
                         .WithMany("History")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

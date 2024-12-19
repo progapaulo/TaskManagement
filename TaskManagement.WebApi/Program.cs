@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TaskManagement.Domain.Repositories;
+using TaskManagement.Domain.Services;
 using TaskManagement.ORM;
 using TaskManagement.ORM.Repositories;
 using TaskManagementAPI.Application;
@@ -43,7 +44,7 @@ builder.Services.AddMvc()
 // Registro dos repositórios
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 // Configuração do Automapper (caso esteja usando para mapear DTOs)
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -52,6 +53,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Configuração para usar o Controller (API)
 builder.Services.AddControllers();
+
+// Registering the TaskService
+builder.Services.AddScoped<TaskService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

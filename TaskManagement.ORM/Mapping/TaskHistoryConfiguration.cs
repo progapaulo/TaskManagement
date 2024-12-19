@@ -22,7 +22,7 @@ public class TaskHistoryConfiguration : IEntityTypeConfiguration<TaskHistory>
         // Relacionamento de Historico com Tarefa (N:1)
         builder.HasOne(th => th.Tasks)
             .WithMany(t => t.History)
-            .HasForeignKey(th => th.Id)
+            .HasForeignKey(th => th.TaskId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -28,23 +28,16 @@ public class TaskConfiguration : IEntityTypeConfiguration<Tasks>
         builder.Property(t => t.DueDate)
             .IsRequired();
 
-        // Relacionamento de Tarefa com Projeto (N:1)
-        builder.HasOne(t => t.Project)
-            .WithMany(p => p.Tasks)
-            .HasForeignKey(t => t.ProjectId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Relacionamento com o projeto (Task -> Project)
+        builder.HasOne(t => t.Project)  // Cada Task pertence a um Project
+            .WithMany(p => p.Tasks)  // Um Project pode ter muitas Tasks
+            .HasForeignKey(t => t.ProjectId)  // Chave estrangeira no lado da Task
+            .OnDelete(DeleteBehavior.Cascade);  // Quando o Project for excluído, excluir as Tasks associadas
 
-        // Relacionamento de Tarefa com Historico (1:N)
-        builder.HasMany(t => t.History)
-            .WithOne(h => h.Tasks)
-            .HasForeignKey(h => h.Id)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        // Relacionamento de Tarefa com Comentarios (1:N)
-        builder.HasMany(t => t.Comentarios)
-            .WithOne(c => c.Tarefa)
-            .HasForeignKey(c => c.Id)
-            .OnDelete(DeleteBehavior.Cascade);
-        
+        // Relacionamento com os comentários (Task -> Comment)
+        builder.HasMany(t => t.Comentarios)  // Uma Task pode ter muitos Comments
+            .WithOne(c => c.Tarefa)  // Cada Comment pertence a uma Task
+            .HasForeignKey(c => c.TTaskId)  // Chave estrangeira no lado do Comment
+            .OnDelete(DeleteBehavior.Cascade);  // Quando a Task for excluída, excluir os Comments associados
     }
 }

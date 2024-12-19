@@ -18,4 +18,10 @@ public class Tasks : BaseEntity
     public Project Project { get; set; }
     public List<TaskHistory> History { get; set; } = new List<TaskHistory>();
     public List<Comments> Comentarios { get; set; }
+    
+    public Tasks()
+    {
+        Comentarios = new List<Comments>();
+        History = new List<TaskHistory>();
+    }
 }

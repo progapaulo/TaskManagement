@@ -3,6 +3,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TaskManagement.Domain.Entities;
+using TaskManagement.Domain.Repositories;
+using TaskManagement.Domain.Services;
 using TaskManagementAPI.Application.Commands;
 using TaskManagementAPI.Application.Queries;
 
@@ -14,11 +17,30 @@ public class TaskController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IValidator<CreateTaskCommand> _validator;
+    private readonly TaskService _taskService;
+    private readonly ITaskRepository _taskRepository;
 
-    public TaskController(IMediator mediator, IValidator<CreateTaskCommand> validator)
+    public TaskController(IMediator mediator, IValidator<CreateTaskCommand> validator, TaskService taskService,
+        ITaskRepository taskRepository)
     {
         _mediator = mediator;
         _validator = validator;
+        _taskService = taskService;
+        _taskRepository = taskRepository;
+    }
+    
+    [HttpPost("{taskId}/comments")]
+    public async Task<IActionResult> AddComment(Guid taskId, [FromBody] string commentText)
+    {
+        try
+        {
+            await _taskService.AddCommentToTaskAsync(taskId, commentText);
+            return Ok("Comment added successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
     
     [HttpPost]
@@ -32,6 +54,18 @@ public class TaskController : ControllerBase
         }
 
         var createdTask = await _mediator.Send(command);
+        
+        // Create a task history entry
+        var taskHistory = new TaskHistory
+        {
+            TaskId = createdTask.Id,
+            ChangeDetails = "Tarefa criada",
+            ChangeDate = DateTime.UtcNow
+        };
+
+        // Add the history to the task
+        await _taskRepository.AddTaskHistoryAsync(taskHistory);
+        
         return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.Id }, createdTask);
     }
 
