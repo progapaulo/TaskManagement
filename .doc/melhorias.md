@@ -1,33 +1,24 @@
 [Back to README](../README.md)
 
-## Tech Stack
-The Tech Stack is a set of technologies we use to build our Ambev products, which is why we can consider it the heart of our products.
+### Pontos de Melhoria
 
-All versions of languages, frameworks, and tools have been carefully chosen based on a predefined strategy. We selected the technologies based on our daily challenges and needs.
+1. **Documentação:**
+    - Adicionar suporte ao Swagger para documentação da API.
+2. **Escalabilidade:**
+    - Migrar para uma arquitetura baseada em microsserviços se o número de usuários crescer.
+3. **Desempenho:**
+    - Implementar caching (e.g., Redis) para otimizar respostas de endpoints frequentemente acessados.
+4. **Observabilidade:**
+    - Adicionar monitoramento e logging centralizado (e.g., Serilog, Grafana).
+5. **Integração Contínua:**
+    - Configurar pipelines CI/CD para deploy automático.
+6. **Cloud-Ready:**
+    - Preparar o projeto para execução em cloud (e.g., AWS, Azure) com suporte a escalonamento horizontal.
+7. **Autenticação e Autorização:**
+    - Adicionar suporte a autenticação OAuth2 para maior segurança e integração com sistemas externos.
 
-We use the following technologies in this project:
-
-Backend:
-- **.NET 8.0**: A free, cross-platform, open source developer platform for building many different types of applications.
-  - Git: https://github.com/dotnet/core
-- **C#**: A modern object-oriented programming language developed by Microsoft.
-  - Git: https://github.com/dotnet/csharplang
-
-Testing:
-- **xUnit**: A free, open source, community-focused unit testing tool for the .NET Framework.
-  - Git: https://github.com/xunit/xunit
-
-Frontend:
-- **Angular**: A platform for building mobile and desktop web applications.
-  - Git: https://github.com/angular/angular
-
-Databases:
-- **PostgreSQL**: A powerful, open source object-relational database system.
-  - Git: https://github.com/postgres/postgres
-- **MongoDB**: A general purpose, document-based, distributed database.
-  - Git: https://github.com/mongodb/mongo
 
 <div style="display: flex; justify-content: space-between;">
-  <a href="./overview.md">Previous: Tech Stack</a>
-  <a href="./frameworks.md">Next: Frameworks</a>
+  <a href="./refinamento.md">Previous: Refinamento</a>
+  <a href="./arquitetura.md">Next: Arquitetura</a>
 </div>

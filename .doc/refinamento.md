@@ -18,5 +18,5 @@
 <br/>
 <div style="display: flex; justify-content: space-between;">
   <a href="../README.md">Previous: Read Me</a>
-  <a href="./tech-stack.md">Next: Tech Stack</a>
+  <a href="./melhorias.md">Next: Melhorias</a>
 </div>
