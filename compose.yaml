@@ -4,3 +4,16 @@
     build:
       context: .
       dockerfile: TaskManagement.WebApi/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pass@word
+      POSTGRES_DB: TaskManagement
+    ports:
+      - "5432:5432"
