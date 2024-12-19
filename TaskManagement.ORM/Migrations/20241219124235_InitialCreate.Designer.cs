@@ -12,7 +12,7 @@ using TaskManagement.ORM;
 namespace TaskManagement.ORM.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20241218192648_InitialCreate")]
+    [Migration("20241219124235_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,6 +25,27 @@ namespace TaskManagement.ORM.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TaskManagement.Domain.Entities.Comments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("TTaskId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comentarios", (string)null);
+                });
+
             modelBuilder.Entity("TaskManagement.Domain.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -35,6 +56,9 @@ namespace TaskManagement.ORM.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -54,7 +78,7 @@ namespace TaskManagement.ORM.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("TaskId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -77,17 +101,13 @@ namespace TaskManagement.ORM.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("string");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("string");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -99,6 +119,17 @@ namespace TaskManagement.ORM.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Tasks", (string)null);
+                });
+
+            modelBuilder.Entity("TaskManagement.Domain.Entities.Comments", b =>
+                {
+                    b.HasOne("TaskManagement.Domain.Entities.Tasks", "Tarefa")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tarefa");
                 });
 
             modelBuilder.Entity("TaskManagement.Domain.Entities.TaskHistory", b =>
@@ -130,6 +161,8 @@ namespace TaskManagement.ORM.Migrations
 
             modelBuilder.Entity("TaskManagement.Domain.Entities.Tasks", b =>
                 {
+                    b.Navigation("Comentarios");
+
                     b.Navigation("History");
                 });
 #pragma warning restore 612, 618

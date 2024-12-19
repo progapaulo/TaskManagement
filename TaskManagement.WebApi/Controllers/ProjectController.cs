@@ -20,11 +20,14 @@ public class ProjectController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectCommand command)
     {
-        if (command == null || string.IsNullOrEmpty(command.Name))
-        {
-            return BadRequest("Project name is required.");
-        }
+        var validator = new CreateProjetoCommandValidator();
+        var validationResult = await validator.ValidateAsync(command);
 
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         var createdProject = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetProjectById), new { id = createdProject.Id }, createdProject);
     }

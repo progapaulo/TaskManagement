@@ -1,5 +1,8 @@
+using System.Text.Json;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TaskManagementAPI.Application.Commands;
 using TaskManagementAPI.Application.Queries;
 
@@ -10,18 +13,22 @@ namespace TaskManagement.WebApi.Controllers;
 public class TaskController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IValidator<CreateTaskCommand> _validator;
 
-    public TaskController(IMediator mediator)
+    public TaskController(IMediator mediator, IValidator<CreateTaskCommand> validator)
     {
         _mediator = mediator;
+        _validator = validator;
     }
     
     [HttpPost]
     public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand command)
     {
-        if (command == null || string.IsNullOrEmpty(command.Title))
+        // Validando o comando de criação da tarefa
+        var validationResult = await _validator.ValidateAsync(command);
+        if (!validationResult.IsValid)
         {
-            return BadRequest("O título da tarefa é obrigatório.");
+            return BadRequest(validationResult.Errors);
         }
 
         var createdTask = await _mediator.Send(command);
@@ -45,6 +52,8 @@ public class TaskController : ControllerBase
             return NotFound();
         }
 
+        
+        
         return Ok(task);
     }
 

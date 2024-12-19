@@ -19,6 +19,7 @@ public class TaskHistoryConfiguration : IEntityTypeConfiguration<TaskHistory>
         builder.Property(th => th.ChangeDate)
             .IsRequired();
 
+        // Relacionamento de Historico com Tarefa (N:1)
         builder.HasOne(th => th.Tasks)
             .WithMany(t => t.History)
             .HasForeignKey(th => th.Id)

@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Repositories;
@@ -16,9 +17,18 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
 
     public async Task<Project> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
+        var validator = new CreateProjetoCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            // Lançar uma exceção ou retornar erros para a API
+            throw new ValidationException(validationResult.Errors);
+        }
+        
         var project = new Project
         {
-            Name = request.Name
+            Name = request.Name,
+            UsuarioId = request.UserID
         };
 
         return await _projectRepository.AddAsync(project);

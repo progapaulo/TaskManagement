@@ -12,6 +12,7 @@ public class DefaultContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<Tasks> Tasks { get; set; }
     public DbSet<TaskHistory> TaskHistories { get; set; }
+    public DbSet<Comments> Comments { get; set; }
 
     public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
     
