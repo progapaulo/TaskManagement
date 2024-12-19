@@ -27,6 +27,7 @@
     <ItemGroup>
       <ProjectReference Include="..\TaskManagement.Application\TaskManagement.Application.csproj" />
       <ProjectReference Include="..\TaskManagement.Domain\TaskManagement.Domain.csproj" />
+      <ProjectReference Include="..\TaskManagement.WebApi\TaskManagement.WebApi.csproj" />
     </ItemGroup>
 
     <ItemGroup>
